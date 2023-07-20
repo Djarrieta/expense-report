@@ -1,6 +1,8 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 from Repository import Repository
+from validate_amount import validate_amount
+from validate_description import validate_description
 
 spends = Repository()
 
@@ -8,38 +10,27 @@ spends = Repository()
 async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     text_message = update.message.text
-    splitted_text=text_message.split(",")
+    splitted_text = text_message.split(",")
 
-    if(len(splitted_text)<2):
+    if (len(splitted_text) < 2):
         await update.message.reply_text(f'No comprendo lo que me envías. Coloca "50, restaurante" para registrar $50.000 COP con la descripción "Restaurante"')
         return
 
-    amount_string = text_message.split(",")[0]
-    description = text_message.split(",")[1]
+    amount_string = splitted_text[0]
+    unformatted_description = splitted_text[1]
 
-    if not amount_string.isdigit() :
-        await update.message.reply_text(f'Monto= {amount_string} no es válido.')
-        return
-    
-    amount=0
-    try:
-        amount = float(amount_string)  # Intentar convertir la cadena a un número flotante
-        if amount <= 0:
-            await update.message.reply_text(f'Monto= {amount_string} no es válido.')
-            return
-    except ValueError:
-        pass
-
-    if description == "":
-        await update.message.reply_text(f'Descripción= {description} no es válida.')
+    validated_amount = validate_amount(amount_string)
+    if not validated_amount.message == "":
+        await update.message.reply_text(validated_amount.message)
         return
 
-    if amount < 1000:
-        amount = amount*1000
+    validated_description = validate_description(unformatted_description)
+    if not validated_description.message == "":
+        await update.message.reply_text(validated_description.message)
+        return
 
-    description = description.lstrip().capitalize()
-
-    spends.create_one(amount, description)
+    spends.create_one(validated_amount.amount,
+                      validated_description.description)
     print(spends.get_all())
 
-    await update.message.reply_text(f'He registrado {amount} bajo el concepto de "{description}"')
+    await update.message.reply_text(f'He registrado {validated_amount.formatted()} bajo el concepto de "{validated_description.description}"')
