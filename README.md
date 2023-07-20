@@ -50,5 +50,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Thanks to the developers of the `python-telegram-bot` library for making it easy to build Telegram bots in Python.
 
 ---
-
-Feel free to modify this `README.md` according to your project's specifics. Make sure to include any additional instructions, setup steps, or details relevant to your bot. Happy coding!
