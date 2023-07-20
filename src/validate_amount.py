@@ -1,30 +1,25 @@
 class ValidateAmountResponse:
-    amount:float=0
-    message:str=""
+    amount: float = 0
+    message: str = ""
 
     def formatted(self):
         return "${:,.0f} COP".format(self.amount)
 
-def validate_amount(input:str)-> ValidateAmountResponse:
 
-    response=ValidateAmountResponse()
+def validate_amount(input: str) -> ValidateAmountResponse:
 
-    if not input.isdigit() :
-        response.message=f'Monto= {input} no es válido.'
-        return response
-    
+    response = ValidateAmountResponse()
+
     try:
-        amount = float(input) 
+        amount = float(input)
         if amount <= 0:
-            response.message=f'Monto= {input} no es válido.'
-            return response
+            raise "No valid"
     except ValueError:
-        response.message=f'Monto= {input} no es válido.'
+        response.message = f'Monto= {input} no es válido.'
         return response
-    
 
-    response.amount=amount
-    if(response.amount<1000):
-        response.amount*=1000
+    response.amount = amount
+    if (response.amount < 1000):
+        response.amount *= 1000
 
     return response

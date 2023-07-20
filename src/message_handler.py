@@ -6,7 +6,6 @@ from validate_description import validate_description
 
 spends = Repository()
 
-
 async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     text_message = update.message.text
