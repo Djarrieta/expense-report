@@ -1,0 +1,1 @@
+TELEGRAM_TOKEN = "this_is_a_telegram_token"
