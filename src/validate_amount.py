@@ -6,16 +6,16 @@ class ValidateAmountResponse:
         return "${:,.0f} COP".format(self.amount)
 
 
-def validate_amount(input: str) -> ValidateAmountResponse:
+def validate_amount(amount_as_string: str) -> ValidateAmountResponse:
 
     response = ValidateAmountResponse()
 
     try:
-        amount = float(input)
+        amount = float(amount_as_string)
         if amount <= 0:
-            raise "No valid"
+            raise
     except ValueError:
-        response.message = f'Monto= {input} no es válido.'
+        response.message = f'Monto= {amount_as_string} no es válido.'
         return response
 
     response.amount = amount

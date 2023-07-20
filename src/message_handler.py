@@ -11,7 +11,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     text_message = update.message.text
     splitted_text = text_message.split(",")
 
-    if (len(splitted_text) < 2):
+    if len(splitted_text) < 2:
         await update.message.reply_text(f'No comprendo lo que me envías. Coloca "50, restaurante" para registrar $50.000 COP con la descripción "Restaurante"')
         return
 
